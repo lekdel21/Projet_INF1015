@@ -3,7 +3,7 @@
 #include <memory>
 #include <functional>
 #include "Piece.hpp"
-#include "Affichage.hpp"
+//#include "Affichage.hpp"
 #include "Player.hpp"
 
 

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "Piece.hpp"
+//#include "Affichage.hpp"
 #include "iostream"
 using namespace std;
 

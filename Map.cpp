@@ -8,12 +8,12 @@ using namespace std;
 
 Map::Map()
 {
-	titre_ = "the maze";
-	auto piece1 = make_shared<Piece>("piece 1", "cette piece est obscure.");
-	auto piece2 = make_shared<Piece>("piece 2", "cette piece est clair.");
-	auto piece3 = make_shared<Piece>("piece 3", "cette piece est reconfortante.");
-	auto piece4 = make_shared<Piece>("piece 4", "vous ne vous sentez pas la bienvenue dans cette piece.");
-	auto piece5 = make_shared<Piece>("piece 5", "cette piece est etrange.");
+	titre_ = "The Abandoned House";
+	auto piece1 = make_shared<Piece>("Kitchen", "This room is very dark");
+	auto piece2 = make_shared<Piece>("Living Room", "This room is very clear");
+	auto piece3 = make_shared<Piece>("Storage", "This room is comforting");
+	auto piece4 = make_shared<Piece>("Bedroom", "You don't feel wlcomed in this room");
+	auto piece5 = make_shared<Piece>("Dining Room", "This room is weird");
 
 	pieces_ = { piece1, piece2, piece3, piece4, piece5 };
 	player_.setPos(piece1);
@@ -47,7 +47,12 @@ void Map::addPiece(shared_ptr<Piece> piece)
 void Map::startGame()
 {
 	char quitter = 'r';
-	cout << titre_ << endl;
+	cout << ">>>>>>>>>> ";
+	cout << titre_;
+	cout << " <<<<<<<<<<"<<endl;
+	cout << "Commands: " << endl;
+	cout << "(L) to show the room that you are in" << endl;
+	cout << "(N),(E),(S),(W) to change rooms" << endl;
 	do
 	{
 		player_.getPos()->afficher();

@@ -4,6 +4,7 @@
 #include <memory>
 #include <map>
 #include <iostream>
+//#include "Affichage.hpp"
 
 using namespace std;
 
@@ -15,10 +16,10 @@ public:
 	shared_ptr<Piece> getCouloir(char direction);
 
 	string getNom() { return nom_; }
-
+	map<string, shared_ptr<Piece>> couloirs_;
 	void afficher();
 private:
 	string nom_;
 	string description_;
-	map<string, shared_ptr<Piece>> couloirs_;
+	
 };
