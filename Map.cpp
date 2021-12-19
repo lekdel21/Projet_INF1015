@@ -6,51 +6,63 @@
 
 using namespace std;
 
+Map::~Map()
+{
+	for (auto&& room : rooms_)
+	{
+		room->~Room();
+		delete room;
+	}
+}
+
 Map::Map()
 {
-	titre_ = "the maze";
-	auto piece1 = make_shared<Piece>("piece 1", "cette piece est obscure.");
-	auto piece2 = make_shared<Piece>("piece 2", "cette piece est clair.");
-	auto piece3 = make_shared<Piece>("piece 3", "cette piece est reconfortante.");
-	auto piece4 = make_shared<Piece>("piece 4", "vous ne vous sentez pas la bienvenue dans cette piece.");
-	auto piece5 = make_shared<Piece>("piece 5", "cette piece est etrange.");
+	titre_ = "The Abandoned House";
 
-	pieces_ = { piece1, piece2, piece3, piece4, piece5 };
-	player_.setPos(piece1);
+	rooms_.push_back(new Room("Kitchen", "This room is very dark"));
+	rooms_.push_back(new Room("Living Room", "This room is very clear"));
+	rooms_.push_back(new Room("Storage", "This room is comforting"));
+	rooms_.push_back(new Room("Bedroom", "You don't feel wlcomed in this room"));
+	rooms_.push_back(new Room("Dining Room", "This room is weird"));
 
-	piece1->addCouloir("East", piece2);
+	player_.setPos(rooms_[0]);
 
-	piece2->addCouloir("East", piece3);
-	piece2->addCouloir("South", piece4);
-	piece2->addCouloir("West", piece1);
+	rooms_[0]->addCouloir("East", rooms_[1]);
 
-	piece3->addCouloir("South", piece5);
-	piece3->addCouloir("West", piece2);
+	rooms_[1]->addCouloir("East", rooms_[2]);
+	rooms_[1]->addCouloir("South", rooms_[3]);
+	rooms_[1]->addCouloir("West", rooms_[0]);
 
-	piece4->addCouloir("East", piece5);
-	piece4->addCouloir("North", piece2);
+	rooms_[2]->addCouloir("South", rooms_[4]);
+	rooms_[2]->addCouloir("West", rooms_[1]);
 
-	piece5->addCouloir("North", piece3);
-	piece5->addCouloir("West", piece4);
+	rooms_[3]->addCouloir("East", rooms_[4]);
+	rooms_[3]->addCouloir("North", rooms_[1]);
+
+	rooms_[4]->addCouloir("North", rooms_[2]);
+	rooms_[4]->addCouloir("West", rooms_[3]);
 }
 
-void Map::changePiece(shared_ptr<Piece> piece)
-{
-
-}
-
-void Map::addPiece(shared_ptr<Piece> piece)
+void Map::addPiece(Room* piece)
 {
 
 }
 
 void Map::startGame()
 {
-	char quitter = 'r';
-	cout << titre_ << endl;
+	bool playing = true;
+	showMenu();
 	do
 	{
 		player_.getPos()->afficher();
-		quitter = player_.avancer();
-	} while (quitter != 'Q');
+		playing = player_.move();
+	} while (playing);
+}
+
+void Map::showMenu()
+{
+	cout << ">>>>>>>>>> " << titre_ << " <<<<<<<<<<" << endl;
+	cout << "Commands: " << endl;
+	cout << "(L) to show the room that you are in" << endl;
+	cout << "(N),(E),(S),(W) to change rooms" << endl;
 }

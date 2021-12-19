@@ -8,5 +8,6 @@ int main()
 {
 	Map map;
 	map.startGame();
+	map.~Map();
 }
 

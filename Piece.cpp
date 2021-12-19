@@ -4,37 +4,71 @@
 
 using namespace std;
 
-Piece::Piece(string nom, string description) : nom_(nom), description_(description)
-{}
+Room::Room(string name, string description) : name_(name), description_(description) {}
 
-void Piece::addCouloir(string direction, shared_ptr<Piece> piece)
+Room::~Room()
 {
-	couloirs_[direction] = piece;
+	for (auto&& o : objects_)
+		delete o;
 }
 
-shared_ptr<Piece> Piece::getCouloir(char direction)
+void Room::addCouloir(string direction, Room* room)
 {
-	shared_ptr<Piece> ptr = nullptr;
-	switch (direction) 
+	hallways_.push_back(pair(direction, room));
+}
+
+Room* Room::getCouloir(string direction)
+{
+
+	for (auto&& hallway : hallways_)
 	{
-		case 'N': ptr = couloirs_["North"];
-			break;
-		case 'E': ptr = couloirs_["East"];
-			break;
-		case 'S': ptr = couloirs_["South"];
-			break;
-		case 'W': ptr = couloirs_["West"];
-			break;
+
+		if (hallway.first[0] == direction[0])
+			return hallway.second;
 	}
-	return ptr;
+
+	if (direction[0] == 'N' || direction[0] == 'E' || direction[0] == 'W' || direction[0] == 'S')
+		cout << "You cannot go there." << endl;
+	else if (direction[0] == 'L')
+		afficher();
+	else if (direction != "quitter")
+		cout << "I do not know that." << endl;
+
+	return nullptr;
 }
 
-void Piece::afficher()
+void Room::afficher()
 {
-	cout << nom_ << endl;
+	cout << endl << endl << endl;
+
+	cout <<"----"<< name_ <<"----"<< endl;
 	cout << description_ << endl;
-	for (auto&& [dir, piece] : couloirs_)
+	
+	for (auto&& hallway : hallways_)
 	{
-		cout << piece->getNom() << " is to the " << dir << " (" << dir[0] << ")" << endl;
+		cout << hallway.second->getName() << " is to the " << hallway.first << " (" << hallway.first[0] << ")" << endl;
+	}
+	
+}
+
+bool Room::isObject(const string& object)
+{
+	if (objects_.size() != 0)
+	{
+		for (auto&& o : objects_)
+		{
+			if (o->getName() == object)
+				return true;
+		}
+	}
+	return false;
+}
+
+Object* Room::getObject(const string& object)
+{
+	for (int i = 0; i < objects_.size(); i++)
+	{
+		if (objects_[i]->getDescription() == object)
+			return objects_[i];
 	}
 }

@@ -2,14 +2,45 @@
 
 #include "Player.hpp"
 
-char Player::avancer()
+bool Player::move()
 {
-	char direction;
+	string move;
+
 	do
 	{
-		cout << ">"; cin >> direction; cout << endl;
-	} while (pos_->getCouloir(direction) == nullptr && direction != 'Q');
-	pos_ = pos_->getCouloir(direction);
+		cout << ">"; cin >> move; cout << endl;
+		objectInteraction(move);
 
-	return direction;
+	} while (pos_->getCouloir(move) == nullptr && move != "quitter");
+	
+	if (move == "quitter")
+		return false;
+	
+	cout << "Going to " << pos_->getCouloir(move)->getName() << endl;
+	
+	pos_ = pos_->getCouloir(move);
+
+	return true;
+}		
+
+void Player::objectInteraction(string& playerMove)
+{
+	string object = playerMove;
+	if (playerMove.find(" ") != -1)
+	{
+		object = playerMove.substr(playerMove.find(" "));
+		playerMove.resize(playerMove.find(" "));
+	}
+	
+	if (pos_->isObject(object))
+	{
+		if (playerMove == "look")
+		{
+			cout << pos_->getObject(playerMove)->getDescription() << endl;
+		}
+		else if (playerMove == "use")
+		{
+			cout << pos_->getObject(playerMove)->getAction() << endl;
+		}
+	}
 }

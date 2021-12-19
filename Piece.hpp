@@ -2,23 +2,32 @@
 
 #include <string>
 #include <memory>
-#include <map>
+#include <vector>
 #include <iostream>
+
+#include "Object.hpp"
+
 
 using namespace std;
 
-class Piece
+class Room
 {
 public:
-	Piece(string nom, string description);
-	void addCouloir(string direction, shared_ptr<Piece> piece);
-	shared_ptr<Piece> getCouloir(char direction);
+	Room(string name, string description);
+	~Room();
+	void addCouloir(string direction, Room* room);
+	Room* getCouloir(string direction);
 
-	string getNom() { return nom_; }
+	string getName() { return name_; }
+	bool isObject(const string& object);
 
+	Object* getObject(const string& object);
+	
 	void afficher();
+
 private:
-	string nom_;
+	string name_;
 	string description_;
-	map<string, shared_ptr<Piece>> couloirs_;
+	vector<Object*> objects_;
+	vector<pair<string, Room*>> hallways_;
 };
